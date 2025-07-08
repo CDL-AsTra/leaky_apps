@@ -37,9 +37,9 @@ COPY  ./requirements.txt /analysis/
 COPY ./docker/run_all.py /analysis/run_all.py
 
 # Copy trufflehog
-COPY ./docker/trufflehog.zip /usr/local/bin/trufflehog
+COPY ./docker/trufflehog.zip /usr/local/bin/trufflehog.zip
 # Unzip trufflehog
-RUN unzip /usr/local/bin/trufflehog -d /usr/local/bin/ && \
+RUN unzip -o /usr/local/bin/trufflehog -d /usr/local/bin/ && \
     rm /usr/local/bin/trufflehog.zip
 RUN chmod +x /usr/local/bin/trufflehog
 
