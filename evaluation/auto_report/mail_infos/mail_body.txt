@@ -1,0 +1,12 @@
+Dear {Developer_Name},
+
+We are security researchers from the University of Vienna studying Android and iOS apps. 
+During our research, we discovered in your {platform} app ({app_name}) the following finding:
+
+{List of findings}
+
+Despite best efforts, some findings might be false positives or already fixed in the latest version.
+If you have any further questions or comments, please contact us.  
+
+Sincerely,
+David Schmidt

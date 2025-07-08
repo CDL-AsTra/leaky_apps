@@ -1,0 +1,94 @@
+package airvisual
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"strings"
+
+	regexp "github.com/wasilibs/go-re2"
+
+	"github.com/trufflesecurity/trufflehog/v3/pkg/common"
+	"github.com/trufflesecurity/trufflehog/v3/pkg/detectors"
+	"github.com/trufflesecurity/trufflehog/v3/pkg/pb/detectorspb"
+)
+
+type Scanner struct{}
+
+// Ensure the Scanner satisfies the interface at compile time.
+var _ detectors.Detector = (*Scanner)(nil)
+
+var (
+	client = common.SaneHttpClient()
+
+	// Make sure that your group is surrounded in boundary characters such as below to reduce false positives.
+	keyPat = regexp.MustCompile(detectors.PrefixRegex([]string{"airvisual"}) + `\b([a-z0-9-]{36})\b`)
+)
+
+// Keywords are used for efficiently pre-filtering chunks.
+// Use identifiers in the secret preferably, or the provider name.
+func (s Scanner) Keywords() []string {
+	return []string{"airvisual"}
+}
+
+// FromData will find and optionally verify AirVisual secrets in a given set of bytes.
+func (s Scanner) FromData(ctx context.Context, verify bool, data []byte) (results []detectors.Result, err error) {
+	dataStr := string(data)
+
+	matches := keyPat.FindAllStringSubmatch(dataStr, -1)
+
+	for _, match := range matches {
+		if len(match) != 2 {
+			continue
+		}
+		resMatch := strings.TrimSpace(match[1])
+
+		s1 := detectors.Result{
+			DetectorType: detectorspb.DetectorType_AirVisual,
+			Raw:          []byte(resMatch),
+		}
+
+		if verify {
+			verified, err := verifyAirvisual(ctx, client, resMatch)
+			if err != nil {
+				continue
+			}
+			s1.Verified = verified
+		}
+
+		results = append(results, s1)
+	}
+
+	return results, nil
+}
+
+func verifyAirvisual(ctx context.Context, client *http.Client, resMatch string) (bool, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("https://api.airvisual.com/v2/countries?key=%s", resMatch), nil)
+	if err != nil {
+		return false, err
+	}
+	req.Header.Add("Accept", "application/vnd.airvisual+json; version=3")
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", resMatch))
+	res, err := client.Do(req)
+	if err == nil {
+		defer res.Body.Close()
+		if res.StatusCode >= 200 && res.StatusCode < 300 {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+func (s Scanner) Verify(ctx context.Context, secret string) bool {
+	verified, _ := verifyAirvisual(ctx, client, secret)
+	return verified
+
+}
+
+func (s Scanner) Type() detectorspb.DetectorType {
+	return detectorspb.DetectorType_AirVisual
+}
+
+func (s Scanner) Description() string {
+	return "AirVisual provides air quality information and monitoring. The API key allows access to various air quality data and services."
+}

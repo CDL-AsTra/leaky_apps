@@ -1,0 +1,117 @@
+package paypaloauth
+
+import (
+	"context"
+	b64 "encoding/base64"
+	"fmt"
+	"net/http"
+	"strings"
+
+	regexp "github.com/wasilibs/go-re2"
+
+	"github.com/trufflesecurity/trufflehog/v3/pkg/common"
+	"github.com/trufflesecurity/trufflehog/v3/pkg/detectors"
+	"github.com/trufflesecurity/trufflehog/v3/pkg/pb/detectorspb"
+)
+
+type Scanner struct {
+	detectors.DefaultMultiPartCredentialProvider
+}
+
+// Ensure the Scanner satisfies the interface at compile time.
+var _ detectors.Detector = (*Scanner)(nil)
+
+var (
+	client = common.SaneHttpClient()
+
+	// Make sure that your group is surrounded in boundary characters such as below to reduce false positives.
+	idPat  = regexp.MustCompile(`\b([A-Za-z0-9_\.]{7}-[A-Za-z0-9_\.]{72}|[A-Za-z0-9_\.]{5}-[A-Za-z0-9_\.]{38})\b`)
+	keyPat = regexp.MustCompile(`\b([A-Za-z0-9_\.\-]{44,80})\b`)
+)
+
+// Keywords are used for efficiently pre-filtering chunks.
+// Use identifiers in the secret preferably, or the provider name.
+func (s Scanner) Keywords() []string {
+	return []string{"paypal"}
+}
+
+// FromData will find and optionally verify PaypalOauth secrets in a given set of bytes.
+func (s Scanner) FromData(ctx context.Context, verify bool, data []byte) (results []detectors.Result, err error) {
+	dataStr := string(data)
+
+	matches := keyPat.FindAllStringSubmatch(dataStr, -1)
+	idmatches := idPat.FindAllStringSubmatch(dataStr, -1)
+
+	for _, idMatch := range idmatches {
+		if len(idMatch) != 2 {
+			continue
+		}
+		resIDMatch := strings.TrimSpace(idMatch[1])
+		for _, secretMatch := range matches {
+			if len(secretMatch) != 2 {
+				continue
+			}
+			resSecretMatch := strings.TrimSpace(secretMatch[1])
+
+			s1 := detectors.Result{
+				DetectorType: detectorspb.DetectorType_PaypalOauth,
+				Raw:          []byte(resSecretMatch),
+				RawV2:        []byte(resSecretMatch + resIDMatch),
+			}
+
+			if verify {
+				verified, err := verifyMatch(ctx, client, resSecretMatch, resIDMatch)
+				if err != nil {
+					continue
+				}
+				s1.Verified = verified
+
+			}
+
+			results = append(results, s1)
+		}
+
+	}
+
+	return results, nil
+}
+
+func (s Scanner) Type() detectorspb.DetectorType {
+	return detectorspb.DetectorType_PaypalOauth
+}
+
+func (s Scanner) Verify(ctx context.Context, secret string) bool {
+	parts := strings.Split(secret, ";-|")
+	if len(parts) != 2 {
+		return false
+	}
+
+	verified, _ := verifyMatch(ctx, client, parts[0], parts[1])
+	return verified
+}
+func verifyMatch(ctx context.Context, client *http.Client, resSecretMatch, resIDMatch string) (bool, error) {
+	data := fmt.Sprintf("%s:%s", resIDMatch, resSecretMatch)
+	encoded := b64.StdEncoding.EncodeToString([]byte(data))
+	payload := strings.NewReader("grant_type=client_credentials")
+	req, err := http.NewRequestWithContext(ctx, "POST", "https://api-m.sandbox.paypal.com/v1/oauth2/token", payload)
+	if err != nil {
+		return false, err
+	}
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Accept-Language", "en_US")
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", encoded))
+	res, err := client.Do(req)
+	if err == nil {
+		defer res.Body.Close()
+		if res.StatusCode >= 200 && res.StatusCode < 300 {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+func (s Scanner) Description() string {
+
+	return "PaypalOauth is used for authenticating with PayPal's API. These credentials can be used to access and perform transactions on behalf of a PayPal account."
+}

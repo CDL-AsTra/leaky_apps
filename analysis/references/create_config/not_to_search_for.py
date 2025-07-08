@@ -1,0 +1,2 @@
+not_intersting = [".nib", ".png", ".svg", ".jpg", ".ttf", ".xcf", ".car", ".xml", ".supx", ".supf", ".sinf", ".dylib", ".so", ".material", ".rsa", ".mf", ".sf"]
+not_intersting_magic = ["image/", "font/", "audio/", "video/"]

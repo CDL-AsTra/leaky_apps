@@ -1,0 +1,70 @@
+# Full Service Comparison
+
+|Services         |Android      |iOS         |Both        |ttest_p     |ttest_statistic|
+|-----------------|-------------|------------|------------|------------|---------------|
+|AWS              |31           |47          |20          |<0.01       |0.02           |
+|Alchemy          |4            |4           |2           |1           |0              |
+|Alibaba          |5            |7           |2           |0.32        |0.01           |
+|AutoPilot        |1            |1           |1           |            |               |
+|Azure            |1            |0           |0           |0.32        |-0.01          |
+|BitLyAccessToken |2            |0           |0           |0.16        |-0.01          |
+|BoxOauth         |1            |0           |0           |0.32        |-0.01          |
+|BrowserStack     |0            |1           |0           |0.32        |0.01           |
+|BscScan          |1            |1           |1           |            |               |
+|Crowdin          |0            |1           |0           |0.32        |0.01           |
+|CustomerIO       |2            |4           |0           |0.48        |0              |
+|DatadogToken     |1            |1           |0           |1           |0              |
+|Disqus           |0            |1           |0           |0.32        |0.01           |
+|Etherscan        |1            |2           |1           |0.32        |0.01           |
+|ExchangeRatesAPI |0            |1           |0           |0.32        |0.01           |
+|FTP              |0            |1           |0           |0.32        |0.01           |
+|Flickr           |10           |5           |2           |0.29        |-0.01          |
+|FourSquare       |2            |0           |0           |0.16        |-0.01          |
+|Freshdesk        |0            |1           |0           |0.32        |0.01           |
+|GCP              |1            |0           |0           |0.32        |-0.01          |
+|Geoapify         |0            |1           |0           |0.32        |0.01           |
+|Github           |4            |6           |1           |0.41        |0.01           |
+|Graphhopper      |1            |1           |0           |1           |0              |
+|HereAPI          |0            |2           |0           |0.16        |0.01           |
+|Honeycomb        |1            |1           |0           |1           |0              |
+|HuggingFace      |0            |1           |0           |0.32        |0.01           |
+|IPGeolocation    |1            |1           |1           |            |               |
+|Infura           |5            |12          |4           |0.02        |0.02           |
+|IpStack          |4            |3           |2           |1           |0              |
+|LaunchDarkly     |1            |4           |0           |0.26        |0.01           |
+|LocationIQ       |2            |1           |0           |0.32        |-0.01          |
+|LokaliseToken    |7            |4           |3           |0.08        |-0.01          |
+|Mailchimp        |3            |6           |1           |0.05        |0.01           |
+|Mailgun          |2            |2           |1           |1           |0              |
+|MaxMindLicense   |2            |1           |0           |0.32        |-0.01          |
+|MediaStack       |1            |1           |1           |            |               |
+|Moralis          |1            |0           |0           |0.32        |-0.01          |
+|Notion           |0            |2           |0           |0.16        |0.01           |
+|OpenAI           |1            |13          |0           |<0.01       |0.02           |
+|OpenWeather      |5            |13          |3           |<0.01       |0.02           |
+|Pixabay          |0            |4           |0           |0.1         |0.01           |
+|PubNubPublishKey |7            |5           |2           |0.53        |0              |
+|PubNubSubscriptionKey|6            |3           |3           |0.03        |-0.02          |
+|RazorPay         |3            |2           |2           |0.32        |-0.01          |
+|Replicate        |1            |0           |0           |0.32        |-0.01          |
+|SendGrid         |3            |4           |2           |0.56        |0              |
+|SentryToken      |6            |4           |3           |0.32        |0.01           |
+|Slack            |5            |7           |3           |0.06        |0.01           |
+|SlackWebhook     |17           |49          |13          |<0.01       |0.03           |
+|Squareup         |1            |3           |1           |0.08        |0.01           |
+|Statuspage       |1            |0           |0           |0.32        |-0.01          |
+|Stripe           |2            |2           |0           |1           |0              |
+|Tomtom           |2            |1           |1           |0.32        |-0.01          |
+|TrelloApiKey     |0            |1           |0           |0.32        |0.01           |
+|TwitterConsumerkey|38           |41          |17          |0.29        |0.01           |
+|URI              |15           |19          |11          |0.18        |0.01           |
+|Unsplash         |0            |1           |0           |0.32        |0.01           |
+|Vercel           |0            |1           |0           |0.32        |0.01           |
+|VisualCrossing   |0            |1           |0           |0.32        |0.01           |
+|WeatherStack     |1            |2           |1           |0.32        |0.01           |
+|WorldWeather     |0            |1           |0           |0.32        |0.01           |
+|Yelp             |1            |1           |1           |            |               |
+|YoutubeApiKey    |2            |0           |0           |0.16        |-0.01          |
+|ZendeskApi       |0            |1           |0           |0.32        |0.01           |
+|ZipCodeAPI       |0            |1           |0           |0.32        |0.01           |
+|total            |215          |307         |106         |            |               |
