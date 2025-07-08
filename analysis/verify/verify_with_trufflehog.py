@@ -7,7 +7,7 @@ import time
 path_to_trufflehog = "trufflehog"
 
 # specify the prefix to the results to verify
-prefix = ""
+prefix = "/results/"
 
 
 # Directory containing secret files to verify

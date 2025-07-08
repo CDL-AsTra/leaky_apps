@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  leaky_apps_analysis:
+    build: ./
+    volumes:
+      - ./docker/apps:/apps
+      - ./docker/results:/results
+    working_dir: /analysis/
+    command: ["python3", "run_all.py"]
+    #command: tail -f /dev/null 

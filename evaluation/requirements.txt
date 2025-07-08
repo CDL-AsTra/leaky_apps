@@ -1,0 +1,14 @@
+duckdb
+pyexiftool
+xmltojson
+pyyaml
+jproperties
+androguard==3.3.5
+python-magic
+pandas
+PyJWT
+scipy
+researchpy
+plotly
+duckdb
+kaleido
