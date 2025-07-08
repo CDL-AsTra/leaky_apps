@@ -36,9 +36,6 @@ all_types['game'] = ['.level', '.unity3d', '.p2d', '.vert', '.csb', '.mesh', '.c
 certificates_keys = [".pk12", '.pem', '.crt', '.cer', '.key', '.p12', '.pfx', '.pub', '.asc', '.gpg', '.pgp', ".der", '.jks', '.md5']
 all_types['cryptography'] = certificates_keys
 
-# Tokens and secrets
-tokens = ['.jwt', '.token', '.secret', '.password', '.pass']
-all_types['tokens'] = tokens
 
 # Archives
 archives = ['.zzip','.lha', '.egg', '.tbz2', '.whl', '.009', '.package', '.xpi', '.arj', '.ova', '.004', '.zip', '.vdi', '.xz', '.pea', '.tgz', '.pkg', '.vmdk', '.z', '.tlz', '.ims', '.008', '.archiveFiles', '.bz2', '.deb', '.mar', '.tar', '.003', '.war', '.rar', '.gz', '.cpio', '.rpm', '.001', '.006', '.vcd', '.005', '.002', '.cab', '.lzma', '.ar', '.7z', '.zipx', '.shar', '.ost', '.iso', '.007', '.s7z', '.glz', '.czl']

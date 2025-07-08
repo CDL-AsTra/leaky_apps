@@ -6,8 +6,9 @@ jproperties
 androguard==3.3.5
 python-magic
 pandas
-jwt
+PyJWT
 scipy
 researchpy
 plotly
 duckdb
+kaleido
