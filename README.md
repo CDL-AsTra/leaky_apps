@@ -12,11 +12,16 @@ We analyzed what secrets are distributed in mobile apps by
 
 ## Folder Structure
 * [Analysis](./analysis/)
-* [Dataset Information](./dataset/)
 * [Evaluation Scripts](./evaluation/)
+* [Dataset Information](./dataset/)
 * [Full Tables from the Paper](./tables/)
 
+The `analysis/` directory contains our code for analyzing apps, the modified Trufflehog version, and the verification scripts.  
+The results include:  
+- a database with all discovered files and secrets, and  
+- a `verified_secrets/` folder.  
 
+These outputs can be further explored using the notebooks provided in the `evaluation/` directory.
 
 
 ## How to cite:
